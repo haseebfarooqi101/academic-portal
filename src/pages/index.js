@@ -30,7 +30,14 @@ export default function Home() {
     const updated = users.filter((u) => u.id !== id);
     setUsers(updated);
   };
-
+  // const updateUser = (updatedUser) => {
+  //   setUsers(prevUsers => 
+  //     prevUsers.map(user => 
+  //       // Compare IDs and replace the user object
+  //       String(user.id) === String(updatedUser.id) ? updatedUser : user
+  //     )
+  //   );
+  // };
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       
@@ -39,8 +46,7 @@ export default function Home() {
       <div className="p-6">
         {activePage === "form" && <UserForm onSubmit={addUser} />}
 
-        {activePage === "table" && (
-          <UserTable users={users} onDelete={deleteUser} />
+        {activePage === "table" && (<UserTable users={users} onDelete={deleteUser} />
         )}
       </div>
     </div>

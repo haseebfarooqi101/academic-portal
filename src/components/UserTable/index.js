@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 
-export default function UserTable({ users, deleteUser }) {
+export default function UserTable({ users, onDelete }) {
   const handleDelete = (id) => {
-    deleteUser(String(id));   // Always send ID  
+    onDelete(String(id));   // Always send ID  
   };
 
   return (

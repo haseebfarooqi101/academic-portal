@@ -8,27 +8,22 @@ export default function EditUser() {
   const router = useRouter();
   const { id } = router.query;
 
-  const [users, setUsers] = useState([]);
-  const [selected, setSelected] = useState(null);
+  
+  const [selected, setSelected] = useState(null); 
 
   useEffect(() => {
+    // 1. Load data from storage 
     const stored = JSON.parse(localStorage.getItem("users")) || [];
-    setUsers(stored);
-
+    // 2. Find the user to edit
     const user = stored.find((u) => String(u.id) === String(id));
-
     setSelected(user);
   }, [id]);
 
   const updateUser = (data) => {
-    const newList = users.map((u) =>
-      String(u.id) === String(id) ? { ...u, ...data } : u
-    );
-    
-
-    localStorage.setItem("users", JSON.stringify(newList));
-
-    router.push("/");
+    const stored = JSON.parse(localStorage.getItem("users")) || [];
+  const updatedList = stored.map((u) => (u.id === id ? { ...u, ...data } : u));
+  localStorage.setItem("users", JSON.stringify(updatedList));
+  router.push("/");
   };
 
   if (!selected) return <p className="text-center mt-20">Loading...</p>;
