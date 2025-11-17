@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-export default function UserTable({ users, onDelete }) {
+export default function UserTable({ users, onDelete, onEdit }) {
   const handleDelete = (id) => {
     onDelete(String(id));   // Always send ID  
   };
@@ -26,18 +26,19 @@ export default function UserTable({ users, onDelete }) {
 
           <tbody>
             {users.map((user) => (
-              <tr key={user.id}>
+              <tr key={user.id} className="animate-row">
                 <td className="p-2 border">{user.username}</td>
                 <td className="p-2 border">{user.email}</td>
                 <td className="p-2 border">{user.age}</td>
 
                 <td className="p-2 border flex gap-3 justify-center">
-                  <Link
-                    href={`/edit/${user.id}`}
+                  <button
+                    // href={`/edit/${user.id}`}
+                    onClick={() => onEdit(user.id)}
                     className="text-blue-600 hover:underline"
                   >
                     Edit
-                  </Link>
+                  </button>
 
                   <button
                     onClick={() => handleDelete(user.id)}

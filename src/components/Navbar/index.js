@@ -6,14 +6,16 @@ export default function Navbar({ activePage, setActivePage }) {
   ];
 
   return (
-    <nav className="bg-gray-800 text-white shadow-md">
+    
+
+    <nav className="fixed top-0 left-0 w-full z-50 bg-gray-800 text-white shadow-md animate-fadeDown">
       <div className="max-w-5xl mx-auto flex gap-8 px-6 py-4 relative">
 
         {navItems.map((item) => (
           <button
             key={item.id}
             onClick={() => setActivePage(item.id)}
-            className="relative group"
+            className="relative group transition-transform duration-200 hover:scale-105"
           >
             <span
               className={`

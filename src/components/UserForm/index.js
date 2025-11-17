@@ -102,7 +102,7 @@ export default function UserForm({ onSubmit, initialData }) {
 
   const errorClass = (field) =>
     errors[field]
-      ? "border-red-500 focus:ring-red-300"
+      ? "border-red-500 focus:ring-red-300 animate-shake"
       : "border-gray-300 focus:ring-blue-300";
 
   return (
@@ -110,7 +110,7 @@ export default function UserForm({ onSubmit, initialData }) {
       {/* ✅ Toast Notification */}
       {toast.message && (
         <div
-          className={`fixed top-6 right-6 px-4 py-3 rounded-lg shadow-lg text-white text-sm font-medium transition-all duration-300 ${
+          className={`fixed top-6 left-1/2 transform -translate-x-1/2 z-50 px-4 py-3 rounded-lg shadow-lg text-white text-sm font-medium transition-all duration-300 animate-fade-in animate-slideInRight ${
             toast.type === "success"
               ? "bg-green-600 animate-fade-in"
               : "bg-red-600 animate-fade-in"
@@ -121,17 +121,20 @@ export default function UserForm({ onSubmit, initialData }) {
       )}
 
       {/* ✅ Centered Form */}
-      <div className="flex justify-center items-center min-h-screen bg-gray-900">
-      <div className="max-h-[90vh] overflow-y-auto w-full max-w-2xl p-4">
+      {/* <div className="flex justify-center items-center min-h-screen bg-gray-900">
+      <div className="max-h-[90vh] overflow-y-auto w-full max-w-3xl p-4"> */}
       <form
         onSubmit={handleSubmit}
-        className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md w-md max-w-md space-y-4 text-gray-800 dark:text-gray-100"
+        className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl w-10xl max-w-10xl space-y-4 text-gray-800 dark:text-gray-100 animate-zoomIn"
       >
         <h2 className="text-xl font-bold text-center text-blue-600 dark:text-blue-400">
           {initialData ? "Edit User" : "User Form"}
         </h2>
 
-        {/* Username */}
+        
+
+        {/* Username + First + Last Name */}
+        <div className="grid grid-cols-3 gap-4">
         <div>
           <input
             name="username"
@@ -144,9 +147,6 @@ export default function UserForm({ onSubmit, initialData }) {
             <p className="text-red-500 text-sm mt-1">{errors.username}</p>
           )}
         </div>
-
-        {/* First + Last Name */}
-        <div className="grid grid-cols-2 gap-4">
           <div>
             <input
               name="firstName"
@@ -173,7 +173,11 @@ export default function UserForm({ onSubmit, initialData }) {
           </div>
         </div>
 
-        {/* Email */}
+        
+        
+
+        {/* Email + Password + Confirm */}
+        <div className="grid grid-cols-3 gap-4">
         <div>
           <input
             name="email"
@@ -187,9 +191,6 @@ export default function UserForm({ onSubmit, initialData }) {
             <p className="text-red-500 text-sm mt-1">{errors.email}</p>
           )}
         </div>
-
-        {/* Password + Confirm */}
-        <div className="grid grid-cols-2 gap-4">
           <div>
             <input
               name="password"
@@ -220,8 +221,8 @@ export default function UserForm({ onSubmit, initialData }) {
           </div>
         </div>
 
-        {/* Phone + Age */}
-        <div className="grid grid-cols-2 gap-4">
+        {/* DOB + Phone + Age */}
+        <div className="grid grid-cols-3 gap-4">
           <div>
             <input
               name="phone"
@@ -248,10 +249,7 @@ export default function UserForm({ onSubmit, initialData }) {
               <p className="text-red-500 text-sm mt-1">{errors.age}</p>
             )}
           </div>
-        </div>
-
-        {/* DOB */}
-        <div>
+          <div>
           <input
             name="dob"
             type="date"
@@ -261,6 +259,10 @@ export default function UserForm({ onSubmit, initialData }) {
           />
           {errors.dob && <p className="text-red-500 text-sm mt-1">{errors.dob}</p>}
         </div>
+        </div>
+
+        
+        
 
         {/* Address */}
         <div>
@@ -281,6 +283,7 @@ export default function UserForm({ onSubmit, initialData }) {
         </div>
 
         {/* Gender */}
+        <div className="grid grid-cols-3 gap-4">
         <div>
           <p className="font-medium">Gender:</p>
           <div className="flex gap-6 mt-2">
@@ -323,7 +326,6 @@ export default function UserForm({ onSubmit, initialData }) {
             <p className="text-red-500 text-sm mt-1">{errors.profession}</p>
           )}
         </div>
-
         {/* Hobbies */}
         <div>
           <p className="font-medium">Hobbies:</p>
@@ -345,6 +347,9 @@ export default function UserForm({ onSubmit, initialData }) {
             <p className="text-red-500 text-sm mt-1">{errors.hobbies}</p>
           )}
         </div>
+        </div>
+
+        
 
         <button
           type="submit"
@@ -354,7 +359,7 @@ export default function UserForm({ onSubmit, initialData }) {
         </button>
       </form>
       </div>
-      </div>
-    </div>
+    //  </div>
+    // </div>
   );
 }
