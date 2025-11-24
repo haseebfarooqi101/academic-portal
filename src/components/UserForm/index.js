@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 
-export default function UserForm({ onSubmit, initialData }) {
+export default function UserForm({ onSubmit, initialData, clearError }) {
   const [form, setForm] = useState({
     username: "",
     firstName: "",
@@ -34,42 +34,136 @@ export default function UserForm({ onSubmit, initialData }) {
     }
   }, [toast]);
 
+  const [showPassword, setShowPassword] = useState(false);
   const handleChange = (e) => {
+    
+
     const { name, value, type, checked } = e.target;
-    if (name === "profession") {
+    if (name === "hobbies") {
       setForm((prev) => {
-        const newProf = checked
-          ? [...prev.profession, value]
-          : prev.profession.filter((p) => p !== value);
-        return { ...prev, profession: newProf };
+        const updated = checked
+          ? [...prev.hobbies, value]
+          : prev.hobbies.filter((p) => p !== value);
+  
+        return { ...prev, hobbies: updated };
       });
     } else {
-      setForm({ ...form, [name]: value });
+      setForm((prev) => ({ ...prev, [name]: value }));
     }
+  
+    // LIVE VALIDATION
+    if (validationRules[name]) {
+      const rule = validationRules[name];
+      let msg = "";
+  
+      if (rule.required && !value?.trim()) msg = rule.message;
+      else if (rule.regex && !rule.regex.test(value)) msg = rule.message;
+      else if (rule.match && value !== form[rule.match]) msg = rule.message;
+  
+      setErrors((prev) => ({ ...prev, [name]: msg }));
+      
+      
+    }
+
   };
+// use loop and fix regix
+// on change validations
+// on blur, on focus
+//prop drilling(methods to avoid) 
+// user name
+const nameRegex = /^[A-Za-z]{3,}$/;
+// EMAIL REGEX 
+const emailRegex = /^(?:[a-zA-Z0-9._%+-]+)@(?:[a-zA-Z0-9.-]+)\.(?:com|co|net|org|pk|edu|info|io)$/;
+
+// PASSWORD RULES 
+const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/ 
+
+
+// PAKISTAN PHONE 
+const phoneRegex = /^(\+92|0)?3\d{9}$/;
+
+const validationRules = {
+  username: {
+    required: true,
+    regex: nameRegex, //  ADDED: Use nameRegex here
+    message: "Username must be at least 3 letters.", // Message updated to be specific
+  },
+  firstName: {
+    required: true,
+    regex: nameRegex, //  ADDED: Use nameRegex here
+    message: "First name must be at least 3 letters.", // Message updated to be specific
+  },
+  lastName: {
+    required: true,
+    message: "Last name is required",
+  },
+  email: {
+    required: true,
+    regex: emailRegex,
+    message: "Enter a valid email (example@gmail.com, example@yahoo.co)",
+  },
+  password: {
+    required: true,
+    regex: passwordRegex,
+    message:
+      "Password must be 8 chars with 1 uppercase, 1 lowercase & 1 digit",
+  },
+  confirmPassword: {
+    match: "password",
+    message: "Passwords do not match",
+    required: true, //  IMPROVED: confirmPassword should also be required
+  },
+  phone: {
+    required: true,
+    regex: phoneRegex,
+    message: "Phone must be: +92XXXXXXXXXX or 03XXXXXXXXX",
+  },
+ 
+};
+
+
 
   const validate = () => {
     let newErrors = {};
-
-    if (!form.username.trim()) newErrors.username = "Username is required";
-    if (!form.firstName.trim()) newErrors.firstName = "First name is required";
-    if (!form.lastName.trim()) newErrors.lastName = "Last name is required";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-      newErrors.email = "Enter a valid email address";
-    if (form.password.length < 6)
-      newErrors.password = "Password must be at least 6 characters";
-    if (form.password !== form.confirmPassword)
-      newErrors.confirmPassword = "Passwords do not match";
-    if (!/^\d{10,11}$/.test(form.phone))
-      newErrors.phone = "Enter a valid phone number (10–11 digits)";
-    if (!form.age || form.age <= 0) newErrors.age = "Please enter a valid age";
-    if (!form.dob) newErrors.dob = "Date of birth is required";
-    if (!form.address) newErrors.address = "Please select your address";
-    if (!form.gender) newErrors.gender = "Please select gender";
-    if (form.profession.length === 0)
+  
+    for (let field in validationRules) {
+      const rule = validationRules[field];
+      const value = form[field];
+  
+      // REQUIRED
+      if (!nameRegex.test(form.username)) {
+        newErrors.username = "Username must be at least 3 letters.";
+      }
+      
+      if (!nameRegex.test(form.firstName)) {
+        newErrors.firstName = "First name must be at least 3 letters.";
+      }
+      
+      if (rule.required && !value?.trim()) {
+        newErrors[field] = rule.message;
+        continue;
+      }
+  
+      // REGEX
+      if (rule.regex && !rule.regex.test(value)) {
+        newErrors[field] = rule.message;
+        continue;
+      }
+      
+      // MATCH ANOTHER FIELD (confirm password)
+      if (rule.match && value !== form[rule.match]) {
+        newErrors[field] = rule.message;
+        continue;
+      }
+    }
+    
+    // Special cases (profession, hobbies)
+    if (form.hobbies.length === 0)
+      newErrors.hobbies = "Select at least one hobbies";
+  
+    if (!form.profession)
       newErrors.profession = "Select at least one profession";
-    if (!form.hobbies) newErrors.hobbies = "Select one hobby";
-
+  
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -91,8 +185,8 @@ export default function UserForm({ onSubmit, initialData }) {
         dob: "",
         address: "",
         gender: "",
-        profession: [],
-        hobbies: "",
+        profession: "",
+        hobbies: [],
       });
       setErrors({});
     } else {
@@ -105,6 +199,7 @@ export default function UserForm({ onSubmit, initialData }) {
       ? "border-red-500 focus:ring-red-300 animate-shake"
       : "border-gray-300 focus:ring-blue-300";
 
+      
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 dark:bg-gray-900">
       {/* ✅ Toast Notification */}
@@ -186,23 +281,35 @@ export default function UserForm({ onSubmit, initialData }) {
             className={`w-full p-3 rounded-lg border ${errorClass("email")} bg-gray-50 dark:bg-gray-700`}
             value={form.email}
             onChange={handleChange}
+            onBlur={() => validate("email", form.email, form)}
+            //onFocus={() => clearError("email")}
           />
           {errors.email && (
             <p className="text-red-500 text-sm mt-1">{errors.email}</p>
           )}
         </div>
           <div>
+          <div className="relative">
             <input
               name="password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
               className={`w-full p-3 rounded-lg border ${errorClass("password")} bg-gray-50 dark:bg-gray-700`}
+              
               value={form.password}
               onChange={handleChange}
+              
             />
+            <span
+             onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-3 cursor-pointer text-gray-600"
+            >
+             {showPassword ? "🙈" : "👁️"}
+              </span>
             {errors.password && (
               <p className="text-red-500 text-sm mt-1">{errors.password}</p>
             )}
+            </div>
           </div>
           <div>
             <input
@@ -312,10 +419,10 @@ export default function UserForm({ onSubmit, initialData }) {
             {["Student", "Teacher", "Developer"].map((p) => (
               <label key={p}>
                 <input
-                  type="checkbox"
+                  type="radio"
                   name="profession"
                   value={p}
-                  checked={form.profession.includes(p)}
+                  checked={form.profession === p }
                   onChange={handleChange}
                 />{" "}
                 {p}
@@ -333,10 +440,10 @@ export default function UserForm({ onSubmit, initialData }) {
             {["Cricket", "Reading", "Gaming"].map((h) => (
               <label key={h}>
                 <input
-                  type="radio"
+                  type="checkbox"
                   name="hobbies"
                   value={h}
-                  checked={form.hobbies === h}
+                  checked={form.hobbies.includes(h)}
                   onChange={handleChange}
                 />{" "}
                 {h}

@@ -1,57 +1,57 @@
 
-
-import Link from "next/link";
+// antd 
+// td
+import { Table, Button } from "antd";
+//import Link from "next/link";
 
 export default function UserTable({ users, onDelete, onEdit }) {
-  const handleDelete = (id) => {
-    onDelete(String(id));   // Always send ID  
-  };
+  // const handleDelete = (id) => {
+  //   onDelete(String(id));  
+   // Always send ID  
+   const columns = [
+    {
+      title: "Username",
+      dataIndex: "username",
+      key: "username",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Age",
+      dataIndex: "age",
+      key: "age",
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (_, record) => (
+        <div className="flex gap-3">
+          <Button className="text-blue-600 hover:underline" onClick={() => onEdit(record.id)}>
+            Edit
+          </Button>
+
+          <Button danger type="link" onClick={() => onDelete(String(record.id))}>
+            Delete
+          </Button>
+        </div>
+      ),
+    },
+  ];
+  
 
   return (
-    <div className="mt-10 max-w-4xl mx-auto">
-      <h2 className="text-xl font-bold mb-3">User Records</h2>
-
-      {users.length === 0 ? (
-        <p className="text-shadow-gray-500">No data available.</p>
-      ) : (
-        <table className="w-full border rounded shadow">
-          <thead className="bg-white-100">
-            <tr>
-              <th className="p-2 border">Username</th>
-              <th className="p-2 border">Email</th>
-              <th className="p-2 border">Age</th>
-              <th className="p-2 border">Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.id} className="animate-row">
-                <td className="p-2 border">{user.username}</td>
-                <td className="p-2 border">{user.email}</td>
-                <td className="p-2 border">{user.age}</td>
-
-                <td className="p-2 border flex gap-3 justify-center">
-                  <button
-                    // href={`/edit/${user.id}`}
-                    onClick={() => onEdit(user.id)}
-                    className="text-blue-600 hover:underline"
-                  >
-                    Edit
-                  </button>
-
-                  <button
-                    onClick={() => handleDelete(user.id)}
-                    className="text-red-600 hover:underline"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+    <div className="max-w-4xl mx-auto mt-12">
+      <Table
+        className="my-custom-table"
+        dataSource={users}
+        columns={columns}
+        rowKey="id"
+        pagination={false}
+      />
     </div>
   );
 }
+
