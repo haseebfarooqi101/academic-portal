@@ -1,13 +1,12 @@
 
 // antd 
 // td
-import { Table, Button } from "antd";
+import ReusableTable from "../ReusableTable";
+import { Popconfirm, Button } from "antd";
 //import Link from "next/link";
 
 export default function UserTable({ users, onDelete, onEdit }) {
-  // const handleDelete = (id) => {
-  //   onDelete(String(id));  
-   // Always send ID  
+
    const columns = [
     {
       title: "Username",
@@ -32,10 +31,18 @@ export default function UserTable({ users, onDelete, onEdit }) {
           <Button className="text-blue-600 hover:underline" onClick={() => onEdit(record.id)}>
             Edit
           </Button>
-
-          <Button danger type="link" onClick={() => onDelete(String(record.id))}>
+             
+          <Popconfirm
+          title="Are you sure you want to delete this user?"
+          okText="Yes"
+          cancelText="No"
+          onConfirm={() => onDelete(record.id)}
+        >
+           {/* onClick={() => onDelete(String(record.id))} */}
+          <Button danger type="link" >
             Delete
           </Button>
+          </Popconfirm>
         </div>
       ),
     },
@@ -43,14 +50,14 @@ export default function UserTable({ users, onDelete, onEdit }) {
   
 
   return (
-    <div className="max-w-4xl mx-auto mt-12">
-      <Table
-        className="my-custom-table"
-        dataSource={users}
-        columns={columns}
-        rowKey="id"
-        pagination={false}
-      />
+    <div className="max-w-4xl mx-auto mt-10">
+      <h2 className="text-xl font-semibold mb-4">User Records</h2>
+
+        <ReusableTable
+          columns={columns}
+          dataSource={users}
+          loading={false}
+       />
     </div>
   );
 }

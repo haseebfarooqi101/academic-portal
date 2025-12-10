@@ -1,90 +1,65 @@
-
-
-import UserForm from "@/components/UserForm";
-import UserTable from "@/components/UserTable";
-import Navbar from "@/components/Navbar";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { addUser, deleteUser } from "../store/userSlice.ls";
+import { Table, Button, Input, Popconfirm, Card } from "antd";
 
 export default function Home() {
-  const [users, setUsers] = useState([]);
-  const [activePage, setActivePage] = useState("form"); // default page
-  const [editingUser, setEditingUserId] = useState(null); 
-//craete
- //on edit pass on edit pass on user table seit edit 
+  const dispatch = useDispatch();
+  const users = useSelector((state) => state.users.list);
 
-  // ✅ Load users from localStorage on page load
-  useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("users")) || [];
-    setUsers(saved);
-  }, []);
+  const [name, setName] = useState("");
 
-  // ✅ Save users to localStorage whenever "users" changes
-  useEffect(() => {
-    localStorage.setItem("users", JSON.stringify(users));
-  }, [users]);
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+    },
+    {
+      title: "Action",
+      render: (_, record) => (
+        <Popconfirm
+          title="Delete this user?"
+          okText="Yes"
+          cancelText="No"
+          onConfirm={() => dispatch(deleteUser(record.id))}
+        >
+          <Button danger type="link">Delete</Button>
+        </Popconfirm>
+      ),
+    },
+  ];
 
-  // ✅ Add new user
-  const addUser = (userData) => {
-    const existingUserIndex = users.findIndex(user => 
-      (userData.id && user.id === userData.id) || // 1. Match by ID (explicit update via Edit button)
-      (user.email === userData.email)              // 2. Match by Email (prevent duplicate when adding new)
-  );
-
-  if (existingUserIndex !== -1) {
-      // CASE: USER EXISTS (UPDATE/REPLACE)
-      const updatedUsers = users.map((user, index) => {
-          if (index === existingUserIndex) {
-              // Merges old data with new data to replace the entry
-              return { ...user, ...userData }; 
-          }
-          return user; // Return all other users unchanged
-      });
-      
-      setUsers(updatedUsers);
-      setEditingUserId(null);   // Clear editing state
-      setActivePage("table"); // Switch to table view
-      return; 
-  }
-    const newUser = { id: Date.now().toString(), ...userData }; // make ID string
-    setUsers([...users, newUser]);
-    
+  const add = () => {
+    if (!name.trim()) return;
+    dispatch(addUser({ id: Date.now(), name }));
+    setName("");
   };
 
-  // ✅ Delete user
-  const deleteUser = (id) => {
-    const updated = users.filter((u) => u.id !== id);
-    setUsers(updated);
-  };
-  // const updateUser = (updated) => {
-  //   setUsers((prev) =>
-  //     prev.map((u) => (u.id === updated.id ? updated : u))
-  //   );
-  //   setEditingUser(null);     // clear edit
-  //   setActivePage("table");   // go back to table
-  // };
-   const handleEdit = (user) => {
-    setEditingUserId(user);
-    setActivePage("form");
-  };
-  
   return (
-    <div className="pt-0">
-    <div className="h-screen overflow-hidden bg-gray-900 text-white">
-      
-      <Navbar activePage={activePage} setActivePage={setActivePage} />
+    <div className="min-h-screen flex justify-center items-center p-6">
+      <Card className="w-full max-w-xl shadow-lg">
+        <h1 className="text-2xl font-semibold mb-4 text-center">
+          Redux Toolkit CRUD
+        </h1>
 
-      <div className="p-6">
-        {activePage === "form" && (
-          <div> className="animate-fade"
-          <UserForm onSubmit={addUser} initialData={users.find(item => item.id === editingUser)} />
-          </div>)}
+        <div className="flex gap-2 mb-4">
+          <Input 
+            placeholder="Enter user name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <Button type="primary" onClick={add}>
+            Add
+          </Button>
+        </div>
 
-        {activePage === "table" && (
-          <div> className="animate-fade"
-          <UserTable users={users} onDelete={deleteUser} onEdit={handleEdit}/>
-        </div>)}
-      </div>
-    </div>
+        <Table
+          rowKey="id"
+          columns={columns}
+          dataSource={users}
+          pagination={false}
+        />
+      </Card>
     </div>
   );
 }

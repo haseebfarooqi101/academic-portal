@@ -1,7 +1,11 @@
+//redux
+//redux toolkit
+//jotai
+
 "use client";
 import { useState, useEffect } from "react";
 
-export default function UserForm({ onSubmit, initialData, clearError }) {
+export default function UserForm({ onSubmit, initialData }) {
   const [form, setForm] = useState({
     username: "",
     firstName: "",
@@ -14,8 +18,8 @@ export default function UserForm({ onSubmit, initialData, clearError }) {
     dob: "",
     address: "",
     gender: "",
-    profession: [],
-    hobbies: "",
+    profession: "",
+    hobbies: [],
   });
 
   const [errors, setErrors] = useState({});
@@ -23,7 +27,10 @@ export default function UserForm({ onSubmit, initialData, clearError }) {
 
   // Prefill if editing
   useEffect(() => {
-    if (initialData) setForm(initialData);
+    if (initialData) {
+      setForm(initialData);
+    }
+    
   }, [initialData]);
 
   // Auto-hide toast
@@ -59,6 +66,8 @@ export default function UserForm({ onSubmit, initialData, clearError }) {
       if (rule.required && !value?.trim()) msg = rule.message;
       else if (rule.regex && !rule.regex.test(value)) msg = rule.message;
       else if (rule.match && value !== form[rule.match]) msg = rule.message;
+      else if (rule.validate && !rule.validate(value)) msg = rule.message;
+
   
       setErrors((prev) => ({ ...prev, [name]: msg }));
       
@@ -86,16 +95,16 @@ const validationRules = {
   username: {
     required: true,
     regex: nameRegex, //  ADDED: Use nameRegex here
-    message: "Username must be at least 3 letters.", // Message updated to be specific
+    message: "Username too short, atleast 3 characters.", // Message updated to be specific
   },
   firstName: {
     required: true,
     regex: nameRegex, //  ADDED: Use nameRegex here
-    message: "First name must be at least 3 letters.", // Message updated to be specific
+    message: "First Name must be at least 3 letters.", // Message updated to be specific
   },
   lastName: {
     required: true,
-    message: "Last name is required",
+    message: "Last Name is required",
   },
   email: {
     required: true,
@@ -106,7 +115,7 @@ const validationRules = {
     required: true,
     regex: passwordRegex,
     message:
-      "Password must be 8 chars with 1 uppercase, 1 lowercase & 1 digit",
+      "password is required Password must be 8 chars with 1 uppercase, 1 lowercase & 1 digit",
   },
   confirmPassword: {
     match: "password",
@@ -116,57 +125,87 @@ const validationRules = {
   phone: {
     required: true,
     regex: phoneRegex,
-    message: "Phone must be: +92XXXXXXXXXX or 03XXXXXXXXX",
+    message: "Phone is required",
   },
- 
+  age:{
+    required: true,
+    validate: (value) => Number(value) > 0,
+    message: "Age must be greater than 0",
+  },
+  dob:{
+    required: true,
+    message: "DOB is required",
+
+  },
+  address:{
+    required: true,
+    message: "address is required",
+    
+  },
+  gender:{
+    required: true,
+    message: "gender is required",
+    
+  },
+  profession:{
+    required: true,
+    message: "profession is required",
+    
+  },
+  
 };
 
 
 
-  const validate = () => {
-    let newErrors = {};
-  
-    for (let field in validationRules) {
-      const rule = validationRules[field];
-      const value = form[field];
-  
-      // REQUIRED
-      if (!nameRegex.test(form.username)) {
-        newErrors.username = "Username must be at least 3 letters.";
-      }
-      
-      if (!nameRegex.test(form.firstName)) {
-        newErrors.firstName = "First name must be at least 3 letters.";
-      }
-      
-      if (rule.required && !value?.trim()) {
-        newErrors[field] = rule.message;
-        continue;
-      }
-  
-      // REGEX
-      if (rule.regex && !rule.regex.test(value)) {
-        newErrors[field] = rule.message;
-        continue;
-      }
-      
-      // MATCH ANOTHER FIELD (confirm password)
-      if (rule.match && value !== form[rule.match]) {
-        newErrors[field] = rule.message;
-        continue;
-      }
+const validate = () => {
+  let newErrors = {};
+
+  for (let field in validationRules) {
+    const rule = validationRules[field];
+    const value = form[field];
+
+    // REQUIRED (submit error)
+    if (rule.required && (!value || value === "" || value.length === 0)) {
+      newErrors[field] = `${field} is required`;
+      continue;
     }
+    if (field === "age" && Number(value) <= 0) {
+      newErrors.age = "Age must be greater than 0";
+      continue;
+    }
+    // DOB MUST BE A PAST DATE
+     if (field === "dob") {
+       const today = new Date().toISOString().split("T")[0];
+     if (value >= today) {
+       newErrors.dob = "DOB must be a past date";
+        continue;
+        }
+      }
+
     
-    // Special cases (profession, hobbies)
-    if (form.hobbies.length === 0)
-      newErrors.hobbies = "Select at least one hobbies";
-  
-    if (!form.profession)
-      newErrors.profession = "Select at least one profession";
-  
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+
+    // REGEX
+    if (rule.regex && !rule.regex.test(value)) {
+      newErrors[field] = rule.message;
+      continue;
+    }
+
+    // MATCH
+    if (rule.match && value !== form[rule.match]) {
+      newErrors[field] = rule.message;
+      continue;
+    }
+  }
+
+  // HOBBIES special case
+  if (form.hobbies.length === 0) {
+    newErrors.hobbies = "Hobbies are required";
+  }
+
+  setErrors(newErrors);
+  return Object.keys(newErrors).length === 0;
+};
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -202,7 +241,7 @@ const validationRules = {
       
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 dark:bg-gray-900">
-      {/* ✅ Toast Notification */}
+      {/* Toast Notification */}
       {toast.message && (
         <div
           className={`fixed top-6 left-1/2 transform -translate-x-1/2 z-50 px-4 py-3 rounded-lg shadow-lg text-white text-sm font-medium transition-all duration-300 animate-fade-in animate-slideInRight ${
@@ -216,8 +255,6 @@ const validationRules = {
       )}
 
       {/* ✅ Centered Form */}
-      {/* <div className="flex justify-center items-center min-h-screen bg-gray-900">
-      <div className="max-h-[90vh] overflow-y-auto w-full max-w-3xl p-4"> */}
       <form
         onSubmit={handleSubmit}
         className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl w-10xl max-w-10xl space-y-4 text-gray-800 dark:text-gray-100 animate-zoomIn"
@@ -347,6 +384,7 @@ const validationRules = {
             <input
               name="age"
               type="number"
+              min="1"
               placeholder="Age"
               className={`w-full p-3 rounded-lg border ${errorClass("age")} bg-gray-50 dark:bg-gray-700`}
               value={form.age}
@@ -360,6 +398,7 @@ const validationRules = {
           <input
             name="dob"
             type="date"
+            max={new Date().toISOString().split("T")[0]}
             className={`w-full p-3 rounded-lg border ${errorClass("dob")} bg-gray-50 dark:bg-gray-700`}
             value={form.dob}
             onChange={handleChange}
@@ -466,7 +505,7 @@ const validationRules = {
         </button>
       </form>
       </div>
-    //  </div>
-    // </div>
+    
+    
   );
 }
