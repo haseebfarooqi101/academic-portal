@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1765400947436,
+    "name": "Haseeb Farooqi",
+    "email": "Haseeb@school.edu",
+    "registrationNumber": "CS-2021-005",
+    "department": "Computer Science",
+    "password": "Haseeb@123"
+  },
+  {
+    "id": 1765412596692,
+    "name": "Khan Ahmed",
+    "email": "khan@school.edu",
+    "registrationNumber": "CS-2021-023",
+    "department": "Computer Science",
+    "password": "Khan@123"
+  },
+  {
+    "id": 1765431605856,
+    "name": "Hamza Butt",
+    "email": "hamza@school.edu",
+    "registrationNumber": "EE-2022-014",
+    "department": "Electrical",
+    "password": "Hamza@123"
+  }
+]
