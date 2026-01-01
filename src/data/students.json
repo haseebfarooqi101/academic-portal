@@ -5,7 +5,8 @@
     "email": "Haseeb@school.edu",
     "registrationNumber": "CS-2021-005",
     "department": "Computer Science",
-    "password": "Haseeb@123"
+    "password": "Haseeb@123",
+    "status": "approved"
   },
   {
     "id": 1765412596692,
@@ -13,7 +14,8 @@
     "email": "khan@school.edu",
     "registrationNumber": "CS-2021-023",
     "department": "Computer Science",
-    "password": "Khan@123"
+    "password": "Khan@123",
+    "status": "approved"
   },
   {
     "id": 1765431605856,
@@ -21,6 +23,124 @@
     "email": "hamza@school.edu",
     "registrationNumber": "EE-2022-014",
     "department": "Electrical",
-    "password": "Hamza@123"
+    "password": "Hamza@123",
+    "status": "approved"
+  },
+  {
+    "id": 1766063405044,
+    "name": "Hasan Sajjad",
+    "email": "hassan@school.edu",
+    "registrationNumber": "CS-2021-003",
+    "department": "Computer Science",
+    "password": "Hasan@123",
+    "status": "approved"
+  },
+  {
+    "id": 1766063688670,
+    "name": "Raja Hammad",
+    "email": "hammad@school.edu",
+    "registrationNumber": "ME-2022-039",
+    "department": "Mechanical",
+    "password": "Hammad@123",
+    "status": "approved"
+  },
+  {
+    "id": 1766749771482,
+    "name": "Hamza Malik",
+    "email": "Hamza@school.edu",
+    "registrationNumber": "CS-2025-123",
+    "department": "Computer Science",
+    "password": "Hamza@123",
+    "status": "approved"
+  },
+  {
+    "id": 1765412596697,
+    "name": "Ali Ahmad",
+    "email": "ali@school.edu",
+    "registrationNumber": "EE-2021-007",
+    "department": "Electrical",
+    "password": "Ali@123",
+    "status": "approved"
+  },
+  {
+    "id": 1765412596698,
+    "name": "Omar Hassan",
+    "email": "omar@school.edu",
+    "registrationNumber": "ME-2021-012",
+    "department": "Mechanical",
+    "password": "Omar@123",
+    "status": "approved"
+  },
+  {
+    "id": 1765412596699,
+    "name": "Zain Abbas",
+    "email": "zain@school.edu",
+    "registrationNumber": "CS-2022-045",
+    "department": "Computer Science",
+    "password": "Zain@123",
+    "status": "approved"
+  },
+  {
+    "id": 1765412596700,
+    "name": "Fahad Sheikh",
+    "email": "fahad@school.edu",
+    "registrationNumber": "EE-2022-018",
+    "department": "Electrical",
+    "password": "Fahad@123",
+    "status": "approved"
+  },
+  {
+    "id": 1765412596701,
+    "name": "Bilal Khan",
+    "email": "bilal@school.edu",
+    "registrationNumber": "ME-2021-025",
+    "department": "Mechanical",
+    "password": "Bilal@123",
+    "status": "approved"
+  },
+  {
+    "id": 1765412596702,
+    "name": "Usman Ali",
+    "email": "usman@school.edu",
+    "registrationNumber": "CS-2023-067",
+    "department": "Computer Science",
+    "password": "Usman@123",
+    "status": "pending"
+  },
+  {
+    "id": 1765412596703,
+    "name": "Tariq Ahmed",
+    "email": "tariq@school.edu",
+    "registrationNumber": "EE-2023-029",
+    "department": "Electrical",
+    "password": "Tariq@123",
+    "status": "approved"
+  },
+  {
+    "id": 1765412596704,
+    "name": "Saad Malik",
+    "email": "saad@school.edu",
+    "registrationNumber": "ME-2022-041",
+    "department": "Mechanical",
+    "password": "Saad@123",
+    "status": "approved"
+  },
+  {
+    "id": 1765412596705,
+    "name": "Adnan Shah",
+    "email": "adnan@school.edu",
+    "registrationNumber": "PH-2021-015",
+    "department": "Physics",
+    "password": "Adnan@123",
+    "status": "approved"
+  },
+  {
+    "id": 1765412596706,
+    "name": "Kamran Ali",
+    "email": "kamran@school.edu",
+    "registrationNumber": "MA-2022-033",
+    "department": "Mathematics",
+    "password": "Kamran@123",
+    "status": "approved"
   }
 ]

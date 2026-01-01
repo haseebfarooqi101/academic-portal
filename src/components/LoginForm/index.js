@@ -1,3 +1,9 @@
+import { useState } from "react";
+import { TextInput, PasswordInput } from "../FormField";
+import { useScreenSize } from "../../hooks/useScreenSize";
+import { useToast } from "../../hooks/useToast";
+import Toast from "../Toast";
+
 export default function LoginForm({
   email,
   setEmail,
@@ -5,62 +11,98 @@ export default function LoginForm({
   setPassword,
   onSubmit,
   loading,
-  error,
-  formErrors,
   activeTab,
   onForgotPassword,
+  bottomLink,
 }) {
+  const [showPassword, setShowPassword] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState({});
+  const { isMobile } = useScreenSize();
+  const { toast, showError, hideToast } = useToast();
+  
+  const getButtonStyle = () => {
+    const { getFieldWidth, getMaxFieldWidth } = useScreenSize();
+    return {
+      width: isMobile ? getFieldWidth() : '416px',
+      maxWidth: isMobile ? getMaxFieldWidth() : '416px',
+      height: '44px',
+      backgroundColor: '#8A36D0',
+      paddingTop: '12px',
+      paddingRight: '16px',
+      paddingBottom: '12px',
+      paddingLeft: '16px',
+      borderRadius: '8px',
+      marginTop: '16px'
+    };
+  };
+
+  const handleInputChange = (field, value, setter) => {
+    setter(value);
+    // Clear field errors when user starts typing
+    if (fieldErrors[field]) {
+      setFieldErrors(prev => ({ ...prev, [field]: false }));
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    // Check for empty fields
+    const errors = {};
+    if (!email.trim()) errors.email = true;
+    if (!password.trim()) errors.password = true;
+    
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      showError("Please fill all highlighted fields");
+      return;
+    }
+    
+    // Clear any field errors and proceed with login
+    setFieldErrors({});
+    onSubmit(activeTab, showError);
+  };
+  
   return (
     <>
-      {error && (
-        <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-sm text-red-700">{error}</p>
-        </div>
+      {toast.show && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          duration={toast.duration}
+          onClose={hideToast}
+        />
       )}
 
-      <form onSubmit={onSubmit} className="mt-6">
-        <label className="text-sm font-semibold text-gray-800 block mb-1">Email</label>
-        <input
-          className="w-full p-2.5 text-sm border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none placeholder-gray-500 text-gray-700 transition shadow-md"
-          placeholder="Enter your email"
+      <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
+        <TextInput
           type="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          aria-invalid={!!formErrors.email}
-          aria-describedby={formErrors.email ? "email-error" : undefined}
-          required
+          onChange={(e) => handleInputChange("email", e.target.value, setEmail)}
+          placeholder="Enter your email"
+          error={fieldErrors.email}
         />
-        {formErrors.email && (
-          <p id="email-error" className="text-xs text-red-600 mt-1">
-            {formErrors.email}
-          </p>
-        )}
 
-        <label className="text-sm font-semibold text-gray-800 block mb-1 mt-4">
-          Password
-        </label>
-        <input
-          className="w-full p-2.5 text-sm border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none placeholder-gray-500 text-gray-700 transition shadow-md"
-          placeholder="Enter your password"
-          type="password"
+        <PasswordInput
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          aria-invalid={!!formErrors.password}
-          aria-describedby={formErrors.password ? "password-error" : undefined}
-          required
+          onChange={(e) => handleInputChange("password", e.target.value, setPassword)}
+          placeholder="Enter your password"
+          error={fieldErrors.password}
+          showPassword={showPassword}
+          onToggleShow={() => setShowPassword(!showPassword)}
         />
-        {formErrors.password && (
-          <p id="password-error" className="text-xs text-red-600 mt-1">
-            {formErrors.password}
-          </p>
-        )}
 
-        <div className="flex justify-end mt-2">
+        <div className="flex justify-end w-full" style={{ marginTop: '6px' }}>
           {(activeTab === "student" || activeTab === "teacher") && (
             <button
               type="button"
               onClick={onForgotPassword}
-              className="text-xs text-purple-600 hover:text-purple-700 font-medium"
+              className="font-medium"
+              style={{ 
+                color: '#09090B',
+                fontSize: '14px',
+                lineHeight: '20px'
+              }}
             >
               Forgot password?
             </button>
@@ -70,10 +112,17 @@ export default function LoginForm({
         <button
           type="submit"
           disabled={loading}
-          className="mt-6 w-full bg-linear-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white py-2.5 rounded-lg font-semibold text-sm transition shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          className="text-white font-semibold transition shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          style={getButtonStyle()}
         >
           {loading ? "Signing In..." : "Sign In"}
         </button>
+
+        {bottomLink && (
+          <div className="mt-2">
+            {bottomLink}
+          </div>
+        )}
       </form>
     </>
   );
