@@ -325,7 +325,7 @@ export default function AdminDashboard() {
   return (
 
     <div className="min-h-screen bg-white flex">
-     <div className="border border-black"> 
+     <div className=""> 
       {/* Toast */}
       {toast.show && (
         <Toast
@@ -337,7 +337,7 @@ export default function AdminDashboard() {
       )}</div>
       
       {/* Sidebar */}
-      <div className="border border-black">
+      <div className="">
       <AdminSidebar 
         activeItem={activeItem} 
         setActiveItem={setActiveItem}
@@ -358,7 +358,7 @@ export default function AdminDashboard() {
         }`}
         
       >
-        <div className="border border-black">
+        <div className="">
       
       <AdminHeader 
         activeItem={activeItem} 
