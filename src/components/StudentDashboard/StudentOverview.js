@@ -1,6 +1,7 @@
 import DashboardCard from "../DashboardCard";
 
 export default function StudentOverview({ currentUser, gradeData, attendanceData }) {
+  
   return (
     <div className="p-4 sm:p-6">
       {/* Welcome Section */}

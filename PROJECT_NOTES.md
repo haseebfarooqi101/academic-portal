@@ -42,7 +42,7 @@ Building a Next.js academic portal with student/teacher/admin authentication, si
 - **Functionality:**
   - Email & password inputs
   - Validates against stored students in `auth.users.students`
-  - On success: sets `currentUser` in Redux, redirects to `/StudentDashboard`
+  - On success: sets `currentUser` in Redux, redirects to `/Dashboard`
   - Error message if credentials don't match
   - Loading state ("Signing In...")
 - **Student Tab Only:** Works with "Student" tab in LoginTabs
@@ -216,7 +216,7 @@ next.config.mjs (reactCompiler: true, reactStrictMode: true)
 4. Click "Sign In"
 5. Validates against `auth.users.students`
 6. On match: `login` dispatched → `currentUser` set
-7. Redirect to `/StudentDashboard`
+7. Redirect to `/Dashboard`
 8. Student sees welcome message with their name
 
 **Forgot Password (Student):**
@@ -233,7 +233,7 @@ next.config.mjs (reactCompiler: true, reactStrictMode: true)
 
 **Logout:**
 
-1. From StudentDashboard, click "Logout"
+1. From Dashboard, click "Logout"
 2. Redux: `logout` dispatched → `currentUser` set to null
 3. Redirect to `/Login`
 
@@ -378,7 +378,7 @@ npm run dev
 - Home: http://localhost:3000
 - Login: http://localhost:3000/Login
 - Signup: http://localhost:3000/Signup
-- Dashboard: http://localhost:3000/StudentDashboard (after login)
+- Dashboard: http://localhost:3000/Dashboard (after login)
 
 ---
 

@@ -44,6 +44,18 @@ body {
   margin-left: 15rem; /* 240px */
 }
 
+.pl-60 {
+  padding-left: 15rem; /* 240px */
+}
+
+.pl-22 {
+  padding-left: 5.5rem; /* 88px - 64px sidebar + 24px padding */
+}
+
+.pl-66 {
+  padding-left: 16.5rem; /* 264px - 240px sidebar + 24px padding */
+}
+
 /* Custom scrollbar styling */
 .scrollbar-hidden {
   scrollbar-width: none; /* Firefox */

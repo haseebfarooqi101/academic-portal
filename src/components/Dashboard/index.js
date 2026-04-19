@@ -1,5 +1,4 @@
 // Export all dashboard components
-export { default as StudentsTable } from './StudentsTable';
 export { default as StudentsModule } from './StudentsModule';
 export { default as DashboardOverview } from './DashboardOverview';
 export { default as AttendanceModule } from './AttendanceModule';

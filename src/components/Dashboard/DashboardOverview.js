@@ -38,13 +38,7 @@ export default function DashboardOverview({
           </div>
         </div>
         
-        <div 
-          className="rounded-lg p-4"
-          style={{
-            backgroundColor: '#FFFFFF',
-            border: '1px solid #E4E4E7'
-          }}
-        >
+        <div className="rounded-lg p-4 bg-white border border-gray-200">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-gray-600">Departments</p>

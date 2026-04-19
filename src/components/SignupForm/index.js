@@ -7,7 +7,7 @@ import { useToast } from "../../hooks/useToast";
 import Link from "next/link";
 import AccountCreatedSuccess from "../AccountCreatedSuccess";
 import Toast from "../Toast";
-import { useSignupValidation } from "../../hooks/useSignupValidation";
+import { validateForm, validatePasswordConfirmation } from "../../utils/validations";
 import { TextInput, SelectInput, PasswordInput } from "../FormField";
 
 const departments = [
@@ -21,21 +21,14 @@ const departments = [
 
 export default function SignupForm() {
   const dispatch = useDispatch();
-  const { formData, error } = useSelector((state) => state.signup);
+  const { formData } = useSelector((state) => state.signup);
   const { isMobile } = useScreenSize();
   const { toast, showError, hideToast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  
-  const {
-    formErrors,
-    topError,
-    setTopError,
-    validateField,
-    validateForm,
-    setFormErrors
-  } = useSignupValidation();
+  const [formErrors, setFormErrors] = useState({});
+  const [topError, setTopError] = useState("");
 
   const getButtonStyle = () => {
     const { getFieldWidth, getMaxFieldWidth } = useScreenSize();
@@ -66,21 +59,32 @@ export default function SignupForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const required = ["name", "registrationNumber", "email", "password", "confirmPassword", "department"];
-    const empties = required.filter((f) => !formData[f] || (typeof formData[f] === "string" && !formData[f].trim()));
     
-    if (empties.length > 0) {
-      showError("Please fill all highlighted fields");
-      const next = {};
-      empties.forEach((f) => {
-        next[f] = true; // Just mark as error, no specific message
+    // Use utility validation
+    const validation = validateForm(formData, required);
+    
+    if (!validation.isValid) {
+      // Convert validation errors to boolean format for form highlighting
+      const errors = {};
+      Object.keys(validation.errors).forEach(field => {
+        errors[field] = true;
       });
-      setFormErrors(next);
+      setFormErrors(errors);
+      setTopError("All highlighted fields are required");
       return;
     }
 
-    const validationError = validateForm(formData);
-    if (validationError) {
-      showError(validationError);
+    // School email validation
+    if (!formData.email.endsWith("@school.edu")) {
+      setFormErrors({ email: true });
+      setTopError("Please use your school.edu email address");
+      return;
+    }
+
+    // Password confirmation validation
+    if (!validatePasswordConfirmation(formData.password, formData.confirmPassword)) {
+      setFormErrors({ confirmPassword: true });
+      setTopError("Passwords do not match");
       return;
     }
 

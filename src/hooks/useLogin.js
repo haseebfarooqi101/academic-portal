@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { login } from "../redux/slices/authSlice";
+import { validateEmail } from "../utils/validations";
 
 export function useLogin() {
   const [email, setEmail] = useState("");
@@ -13,14 +14,13 @@ export function useLogin() {
   const { users } = useSelector((state) => state.auth);
 
   const handleSignIn = (activeTab, showError) => {
-    // Client-side validation
+    // Client-side validation using utility functions
     if (!email.trim()) {
       showError("Please enter your email");
       return;
     }
     
-    const emailRegex = /^[^\s@]+@school\.edu$/i;
-    if (!emailRegex.test(email)) {
+    if (!validateEmail(email) || !email.endsWith("@school.edu")) {
       showError("Use your school.edu email");
       return;
     }
@@ -43,7 +43,7 @@ export function useLogin() {
         if (student) {
           dispatch(login(student));
           setLoading(false);
-          router.push("/StudentDashboard");
+          router.push("/Dashboard");
         } else {
           showError("Invalid email or password");
           setLoading(false);
@@ -58,12 +58,8 @@ export function useLogin() {
           dispatch(login(user));
           setLoading(false);
           
-          // Route based on role
-          if (user.role === "admin") {
-            router.push("/AdminDashboard");
-          } else {
-            router.push("/TeacherDashboard");
-          }
+          // Route to unified dashboard
+          router.push("/Dashboard");
         } else {
           showError("Invalid email or password");
           setLoading(false);

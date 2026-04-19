@@ -1,10 +1,23 @@
 import { useState, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleSidebar, selectSidebar } from '../../redux/slices/uiSlice';
 
-export default function StudentHeader({ activeItem, breadcrumbs = [], setActiveItem, onToggleSidebar, isMobile, isSidebarOpen }) {
+export default function DashboardHeader({ 
+  userRole,
+  activeItem, 
+  setActiveItem,
+  menuItems 
+}) {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showDashboardDropdown, setShowDashboardDropdown] = useState(false);
+  const dispatch = useDispatch();
+  const { isOpen, isCollapsed, isMobile } = useSelector(selectSidebar);
   const dropdownRef = useRef(null);
   const notificationRef = useRef(null);
+
+  const handleToggleSidebar = () => {
+    dispatch(toggleSidebar());
+  };
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -24,43 +37,65 @@ export default function StudentHeader({ activeItem, breadcrumbs = [], setActiveI
   }, []);
 
   const getPageTitle = () => {
-    switch (activeItem) {
-      case 'dashboard': return 'Dashboard';
-      case 'courses': return 'My Courses';
-      case 'grades': return 'Grades';
-      case 'assignments': return 'Assignments';
-      case 'attendance': return 'Attendance';
-      case 'leaves': return 'Leave Management';
-      case 'schedule': return 'Class Schedule';
-      case 'profile': return 'Profile';
-      default: return 'Dashboard';
+    const item = menuItems.find(item => item.id === activeItem);
+    return item ? item.label : 'Dashboard';
+  };
+
+  const getPortalName = () => {
+    switch (userRole) {
+      case 'teacher': return 'Teacher Portal';
+      case 'student': return 'Student Portal';
+      case 'admin': return 'Admin Portal';
+      default: return 'Portal';
     }
   };
 
-  const menuItems = [
-    { id: 'dashboard', label: 'Dashboard' },
-    { id: 'courses', label: 'My Courses' },
-    { id: 'grades', label: 'Grades' },
-    { id: 'assignments', label: 'Assignments' },
-    { id: 'attendance', label: 'Attendance' },
-    { id: 'leaves', label: 'Leave Management' },
-    { id: 'schedule', label: 'Class Schedule' },
-    { id: 'profile', label: 'Profile' }
-  ];
+  const getNotifications = () => {
+    switch (userRole) {
+      case 'teacher':
+        return [
+          { id: 1, type: 'info', message: 'Assignment submitted', detail: 'John Doe submitted Math homework' },
+          { id: 2, type: 'success', message: 'Class scheduled', detail: 'Physics Lab - Tomorrow 10:00 AM' },
+          { id: 3, type: 'warning', message: 'Grade deadline', detail: 'Submit grades by Friday' }
+        ];
+      case 'student':
+        return [
+          { id: 1, type: 'info', message: 'New assignment posted', detail: 'Mathematics - Due next week' },
+          { id: 2, type: 'success', message: 'Grade updated', detail: 'Physics Quiz - 85/100' }
+        ];
+      case 'admin':
+        return [
+          { id: 1, type: 'info', message: 'New student registration', detail: 'John Doe submitted application' },
+          { id: 2, type: 'success', message: 'Teacher approved', detail: 'Sarah Smith account activated' },
+          { id: 3, type: 'warning', message: 'System maintenance', detail: 'Scheduled for tonight' }
+        ];
+      default:
+        return [];
+    }
+  };
+
+  const getNotificationColor = (type) => {
+    switch (type) {
+      case 'info': return 'bg-blue-500';
+      case 'success': return 'bg-green-500';
+      case 'warning': return 'bg-yellow-500';
+      case 'error': return 'bg-red-500';
+      default: return 'bg-gray-500';
+    }
+  };
 
   return (
     <header 
-      className={`bg-white z-30 flex items-center justify-between fixed top-0 border-b border-gray-200 px-4 lg:px-7 py-2 transition-all duration-300 ${
-        isMobile ? 'w-full left-0' : isSidebarOpen ? 'w-[calc(100%-15rem)] left-60' : 'w-full left-0'
+      className={`bg-white z-30 flex items-center justify-between fixed top-0 border-b border-gray-200 px-4 lg:px-7 py-2 transition-all duration-300 h-12 ${
+        isMobile ? 'w-full left-0' : isOpen ? (isCollapsed ? 'w-[calc(100vw-64px)] left-16' : 'w-[calc(100vw-240px)] left-60') : 'w-full left-0'
       }`}
-      style={{ height: '48px' }}
     >
         {/* Left Side - Hamburger + Breadcrumbs */}
         <div className="flex items-center space-x-2 sm:space-x-4">
           {/* Hamburger Menu - Always show on mobile, show on desktop when sidebar is closed */}
-          {(isMobile || !isSidebarOpen) && (
+          {(isMobile || !isOpen) && (
             <button
-              onClick={onToggleSidebar}
+              onClick={handleToggleSidebar}
               className="p-1 sm:p-2 rounded-lg hover:bg-gray-100 transition-colors shrink-0"
               aria-label="Toggle sidebar"
             >
@@ -73,25 +108,17 @@ export default function StudentHeader({ activeItem, breadcrumbs = [], setActiveI
           )}
           
           {/* Breadcrumbs */}
-          <div className="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm">
-            <span className="text-gray-500">Student Portal</span>
+          <div className="hidden sm:flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm">
+            <span className="text-gray-500">{getPortalName()}</span>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-400 sm:w-4 sm:h-4">
               <polyline points="9,18 15,12 9,6"/>
             </svg>
             <span className="text-gray-900 font-medium truncate">{getPageTitle()}</span>
-            {breadcrumbs.map((crumb, index) => (
-              <div key={index} className="flex items-center space-x-1 sm:space-x-2">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-400 sm:w-4 sm:h-4">
-                  <polyline points="9,18 15,12 9,6"/>
-                </svg>
-                <span className="text-gray-900 font-medium truncate">{crumb}</span>
-              </div>
-            ))}
           </div>
         </div>
 
         {/* Right Side */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2 sm:space-x-4">
           {/* Dashboard Dropdown */}
           <div className="relative" ref={dropdownRef}>
             <button
@@ -192,20 +219,15 @@ export default function StudentHeader({ activeItem, breadcrumbs = [], setActiveI
                   <h3 className="font-semibold text-gray-900">Notifications</h3>
                 </div>
                 <div className="p-4 space-y-3">
-                  <div className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-                    <div>
-                      <p className="text-sm text-gray-900">New assignment posted</p>
-                      <p className="text-xs text-gray-500">Mathematics - Due next week</p>
+                  {getNotifications().map((notification) => (
+                    <div key={notification.id} className="flex items-start space-x-3">
+                      <div className={`w-2 h-2 ${getNotificationColor(notification.type)} rounded-full mt-2`}></div>
+                      <div>
+                        <p className="text-sm text-gray-900">{notification.message}</p>
+                        <p className="text-xs text-gray-500">{notification.detail}</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
-                    <div>
-                      <p className="text-sm text-gray-900">Grade updated</p>
-                      <p className="text-xs text-gray-500">Physics Quiz - 85/100</p>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             )}
