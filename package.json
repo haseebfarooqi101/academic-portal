@@ -16,6 +16,7 @@
     "react-redux": "^9.2.0"
   },
   "devDependencies": {
+    "@netlify/plugin-nextjs": "^5.15.12",
     "@tailwindcss/postcss": "^4",
     "babel-plugin-react-compiler": "1.0.0",
     "baseline-browser-mapping": "^2.9.11",

@@ -29,15 +29,6 @@ export default function TeacherSignupForm() {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [formErrors, setFormErrors] = useState({});
   const [topError, setTopError] = useState("");
-  
-  const {
-    formErrors,
-    topError,
-    setTopError,
-    validateField,
-    validateForm,
-    setFormErrors
-  } = useTeacherSignupValidation();
 
   const getButtonStyle = () => {
     const { getFieldWidth, getMaxFieldWidth } = useScreenSize();
