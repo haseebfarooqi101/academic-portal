@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 import { Provider, useDispatch } from "react-redux";
 import { Readex_Pro, Inter } from "next/font/google";
-import { store } from "../redux/store";
+import { store, persistor } from "../redux/store";
+import { PersistGate } from "redux-persist/integration/react";
 import { loadUsersFromFiles, hydrate } from "../redux/slices/authSlice";
+import { setLeavesFromStorage } from "../redux/slices/leavesSlice";
 import "../styles/globals.css";
 
 const readexPro = Readex_Pro({
@@ -21,19 +23,23 @@ function AppContent({ Component, pageProps }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Hydrate auth state from cookies after client-side mount
     dispatch(hydrate());
-    
-    // Load all users (students and teachers) from JSON files on app startup
-    dispatch(loadUsersFromFiles())
-      .then((result) => {
-        if (result.type === 'auth/loadUsersFromFiles/fulfilled') {
-          console.log("Successfully loaded users from files:", result.payload);
-        }
-      })
-      .catch((error) => {
-        console.error("Error loading users:", error);
-      });
+    dispatch(loadUsersFromFiles());
+
+    // Cross-tab sync: when another tab updates localStorage (leaves),
+    // reload the persisted state into this tab's Redux store
+    const handleStorageChange = (e) => {
+      if (e.key === 'persist:leaves' && e.newValue) {
+        try {
+          const parsed = JSON.parse(e.newValue);
+          const leavesState = JSON.parse(parsed.leaveRequests);
+          dispatch(setLeavesFromStorage(leavesState));
+        } catch (_) {}
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, [dispatch]);
 
   return <Component {...pageProps} />;
@@ -42,9 +48,11 @@ function AppContent({ Component, pageProps }) {
 export default function App(props) {
   return (
     <Provider store={store}>
-      <div className={`${readexPro.variable} ${inter.variable} font-sans`}>
-        <AppContent {...props} />
-      </div>
+      <PersistGate loading={null} persistor={persistor}>
+        <div className={`${readexPro.variable} ${inter.variable} font-sans`}>
+          <AppContent {...props} />
+        </div>
+      </PersistGate>
     </Provider>
   );
 }

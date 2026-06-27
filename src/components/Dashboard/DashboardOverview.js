@@ -1,3 +1,5 @@
+import DashboardCard from "../DashboardCard";
+
 export default function DashboardOverview({ 
   currentUser, 
   studentsData, 
@@ -28,49 +30,34 @@ export default function DashboardOverview({
 
       {/* Quick Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <div className="rounded-lg p-4 bg-white border border-gray-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Total Students</p>
-              <p className="text-2xl font-bold text-blue-600">{studentsData.length}</p>
-            </div>
-            <div className="text-2xl">👥</div>
-          </div>
-        </div>
-        
-        <div className="rounded-lg p-4 bg-white border border-gray-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Departments</p>
-              <p className="text-2xl font-bold text-green-600">{departments.length}</p>
-            </div>
-            <div className="text-2xl">🏢</div>
-          </div>
-        </div>
-        
-        <div className="rounded-lg p-4 bg-white border border-gray-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Pending Leaves</p>
-              <p className="text-2xl font-bold text-yellow-600">
-                {studentsData.reduce((sum, s) => sum + (s.leaves ? s.leaves.filter(l => l.status === 'pending').length : 0), 0)}
-              </p>
-            </div>
-            <div className="text-2xl">📝</div>
-          </div>
-        </div>
-        
-        <div className="rounded-lg p-4 bg-white border border-gray-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Avg Grade</p>
-              <p className="text-2xl font-bold text-purple-600">
-                {(studentsData.reduce((sum, s) => sum + (s.grade || 0), 0) / studentsData.length).toFixed(1)}%
-              </p>
-            </div>
-            <div className="text-2xl">📊</div>
-          </div>
-        </div>
+        <DashboardCard
+          title="Total Students"
+          value={studentsData.length}
+          subtitle="Enrolled"
+          color="blue"
+          icon="👥"
+        />
+        <DashboardCard
+          title="Departments"
+          value={departments.length}
+          subtitle="Active"
+          color="green"
+          icon="🏢"
+        />
+        <DashboardCard
+          title="Pending Leaves"
+          value={studentsData.reduce((sum, s) => sum + (s.leaves ? s.leaves.filter(l => l.status === 'pending').length : 0), 0)}
+          subtitle="Awaiting approval"
+          color="yellow"
+          icon="📝"
+        />
+        <DashboardCard
+          title="Avg Grade"
+          value={`${(studentsData.reduce((sum, s) => sum + (s.grade || 0), 0) / studentsData.length).toFixed(1)}%`}
+          subtitle="Across all students"
+          color="purple"
+          icon="📊"
+        />
       </div>
 
       {/* Charts Section */}

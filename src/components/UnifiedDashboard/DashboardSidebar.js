@@ -126,7 +126,12 @@ export default function DashboardSidebar({
                     borderRadius: '8px'
                   }}
                 >
-                  <span className="text-lg">{item.icon}</span>
+                  <span 
+                    className="flex items-center justify-center w-5 h-5"
+                    style={{ color: activeItem === item.id ? '#8A36D0' : '#3F3F46' }}
+                  >
+                    {item.icon}
+                  </span>
                   {!isCollapsed && (
                     <span 
                       style={{

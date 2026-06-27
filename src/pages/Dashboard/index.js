@@ -5,6 +5,11 @@ import { selectStudents, selectTeachers, selectIsHydrated, approveStudent, rejec
 import { useToast } from "../../hooks/useToast";
 import ApprovalPending from "../../components/ApprovalPending";
 import DashboardLayout from "../../components/UnifiedDashboard/DashboardLayout";
+import { 
+  LayoutDashboard, BookOpen, BarChart2, CalendarCheck, FileText,
+  ClipboardList, School, Users, PenLine, GraduationCap, CalendarDays,
+  UserCheck, ShieldCheck
+} from "lucide-react";
 
 // Import all dashboard modules
 import DashboardOverview from "../../components/Dashboard/DashboardOverview";
@@ -88,29 +93,29 @@ export default function Dashboard() {
     switch (currentUser.role) {
       case 'teacher':
         return [
-          { id: 'dashboard', label: 'Dashboard', icon: '📊' },
-          { id: 'attendance', label: 'Attendance', icon: '📋' },
-          { id: 'classes', label: 'Classes', icon: '🏫' },
-          { id: 'students', label: 'Students', icon: '👥' },
-          { id: 'assignments', label: 'Assignments', icon: '📝' },
-          { id: 'grades', label: 'Grades', icon: '📈' },
-          { id: 'leaves', label: 'Leaves', icon: '📅' },
-          { id: 'schedule', label: 'Schedule', icon: '🗓️' },
+          { id: 'dashboard',   label: 'Dashboard',   icon: <LayoutDashboard size={18} strokeWidth={1.75} /> },
+          { id: 'attendance',  label: 'Attendance',  icon: <ClipboardList   size={18} strokeWidth={1.75} /> },
+          { id: 'classes',     label: 'Classes',     icon: <School          size={18} strokeWidth={1.75} /> },
+          { id: 'students',    label: 'Students',    icon: <Users           size={18} strokeWidth={1.75} /> },
+          { id: 'assignments', label: 'Assignments', icon: <PenLine         size={18} strokeWidth={1.75} /> },
+          { id: 'grades',      label: 'Grades',      icon: <BarChart2       size={18} strokeWidth={1.75} /> },
+          { id: 'leaves',      label: 'Leaves',      icon: <FileText        size={18} strokeWidth={1.75} /> },
+          { id: 'schedule',    label: 'Schedule',    icon: <CalendarDays    size={18} strokeWidth={1.75} /> },
         ];
       case 'student':
         return [
-          { id: 'dashboard', label: 'Dashboard', icon: '📊' },
-          { id: 'courses', label: 'Courses', icon: '📚' },
-          { id: 'grades', label: 'Grades', icon: '📈' },
-          { id: 'attendance', label: 'Attendance', icon: '📋' },
-          { id: 'leaves', label: 'Leaves', icon: '📅' },
+          { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={18} strokeWidth={1.75} /> },
+          { id: 'courses', label: 'Courses', icon: <BookOpen size={18} strokeWidth={1.75} /> },
+          { id: 'grades', label: 'Grades', icon: <BarChart2 size={18} strokeWidth={1.75} /> },
+          { id: 'attendance', label: 'Attendance', icon: <CalendarCheck size={18} strokeWidth={1.75} /> },
+          { id: 'leaves', label: 'Leaves', icon: <FileText size={18} strokeWidth={1.75} /> },
         ];
       case 'admin':
         return [
-          { id: 'dashboard', label: 'Dashboard', icon: '📊' },
-          { id: 'students', label: 'Students', icon: '👥' },
-          { id: 'teachers', label: 'Teachers', icon: '👨‍🏫' },
-          { id: 'approvals', label: 'Approvals', icon: '✅' },
+          { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={18} strokeWidth={1.75} /> },
+          { id: 'students',  label: 'Students',  icon: <GraduationCap   size={18} strokeWidth={1.75} /> },
+          { id: 'teachers',  label: 'Teachers',  icon: <UserCheck       size={18} strokeWidth={1.75} /> },
+          { id: 'approvals', label: 'Approvals', icon: <ShieldCheck     size={18} strokeWidth={1.75} /> },
         ];
       default:
         return [];
