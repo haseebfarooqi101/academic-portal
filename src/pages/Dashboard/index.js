@@ -232,6 +232,7 @@ export default function Dashboard() {
           return (
             <ClassesModule
               departments={departments}
+           
               getDepartmentStats={() => departmentStats}
               subjectPerformanceData={subjectPerformanceData}
               getGradeLetter={getGradeLetter}
