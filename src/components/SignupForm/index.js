@@ -130,9 +130,14 @@ export default function SignupForm() {
         />
       )}
       
-      <div className="flex flex-col w-full">
-      {/* Form Fields */}
-      <div className="flex flex-col items-center w-full" style={{ gap: '12px', paddingBottom: '4px' }}>
+      <div className="flex flex-col w-full h-full">
+      {/* Scrollable Form Fields - grows to fill available space, hidden scrollbar */}
+      <div className="overflow-y-auto flex-1 min-h-0 flex flex-col items-center"
+           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+        <style jsx>{`
+          div::-webkit-scrollbar { display: none; }
+        `}</style>
+        <div className="flex flex-col items-center w-full" style={{ gap: '12px', paddingBottom: '16px' }}>
           <TextInput
             value={formData.name}
             onChange={(e) => handleInputChange("name", e.target.value)}
@@ -181,9 +186,10 @@ export default function SignupForm() {
             onToggleShow={() => setShowConfirmPassword(!showConfirmPassword)}
           />
         </div>
+      </div>
 
       {/* Submit Button and Footer - Right below fields */}
-      <div className="mt-2">
+      <div className="mt-2 shrink-0">
         <form onSubmit={handleSubmit} className="flex justify-center">
           <button 
             type="submit"
