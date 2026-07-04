@@ -127,21 +127,9 @@ export default function TeacherSignupForm() {
         />
       )}
       
-      <div className="flex flex-col h-full">
-      {/* Scrollable Form Fields - Fixed height with hidden scrollbar */}
-      <div className="overflow-y-auto scrollbar-hidden flex flex-col items-center"
-           style={{
-             height: '300px', // Fixed height so fields don't expand
-             scrollbarWidth: 'none',
-             msOverflowStyle: 'none'
-           }}>
-        <style jsx>{`
-          .scrollbar-hidden::-webkit-scrollbar {
-            display: none;
-          }
-        `}</style>
-        
-        <div className="flex flex-col items-center w-full" style={{ gap: '12px', paddingBottom: '16px' }}>
+      <div className="flex flex-col w-full">
+      {/* Form Fields */}
+      <div className="flex flex-col items-center w-full" style={{ gap: '12px', paddingBottom: '4px' }}>
           <TextInput
             value={formData.name}
             onChange={(e) => handleInputChange("name", e.target.value)}
@@ -183,7 +171,6 @@ export default function TeacherSignupForm() {
             onToggleShow={() => setShowConfirmPassword(!showConfirmPassword)}
           />
         </div>
-      </div>
 
       {/* Submit Button and Footer - Fixed at bottom */}
       <div className="shrink-0 mt-4">

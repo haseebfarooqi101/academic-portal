@@ -20,19 +20,19 @@ export default function StudentSignup() {
     if (isMobile) {
       return {
         containerClass: "min-h-screen flex justify-center items-end bg-gradient-to-br from-gray-50 to-gray-100 p-2",
-        cardClass: "w-full bg-white rounded-t-2xl border border-gray-200 shadow-lg flex flex-col h-[calc(100vh-32px)] p-6 gap-4",
+        cardClass: "w-full bg-white rounded-t-2xl border border-gray-200 shadow-lg flex flex-col p-6 gap-4 pb-8",
         contentClass: "flex flex-col items-center w-full"
       };
     } else if (isTablet) {
       return {
         containerClass: "min-h-screen flex justify-center items-end bg-gradient-to-br from-gray-50 to-gray-100 p-4",
-        cardClass: "w-[520px] bg-white rounded-t-2xl border border-gray-200 shadow-lg flex flex-col h-[calc(100vh-32px)] max-h-[672px] p-8 gap-6",
+        cardClass: "w-[520px] bg-white rounded-t-2xl border border-gray-200 shadow-lg flex flex-col p-8 gap-6 pb-10",
         contentClass: "flex flex-col items-center w-full"
       };
     } else {
       return {
         containerClass: "min-h-screen flex justify-center items-end bg-gradient-to-br from-gray-50 to-gray-100 p-8",
-        cardClass: "w-[520px] bg-white rounded-t-2xl border border-gray-200 shadow-lg flex flex-col h-[calc(100vh-64px)] max-h-[672px] p-12 gap-8",
+        cardClass: "w-[520px] bg-white rounded-t-2xl border border-gray-200 shadow-lg flex flex-col p-12 gap-8 pb-12",
         contentClass: "flex flex-col items-center w-full"
       };
     }
