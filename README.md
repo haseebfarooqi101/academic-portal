@@ -1,40 +1,138 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Academic Portal
+
+A full-featured academic management portal for students, teachers, and admins — built with Next.js, Redux Toolkit, and Tailwind CSS.
+
+🌐 **Live Demo:** [https://academic-1.netlify.app](https://academic-1.netlify.app)
+
+---
+
+## Features
+
+### Authentication
+
+- Student signup with registration number, department, and school email validation
+- Student and Teacher/Admin login with tab-based role switching
+- Forgot password flow with modal (student and teacher)
+- Account approval system — new student accounts require admin approval
+
+### Dashboards
+
+- **Student Dashboard** — overview, courses, grades, attendance, assignments, schedule, leave requests
+- **Teacher Dashboard** — classes, students, grades, attendance, assignments, leaves
+- **Admin Dashboard** — student/teacher approvals, management modules, charts and analytics
+- Unified dashboard layout with responsive sidebar navigation
+
+### Signup Flow
+
+- Student signup at `/Signup`
+- Teacher/Admin signup at `/TeacherSignup`
+- Both forms use internal hidden scroll — card height stays fixed, no page scroll
+- Tab switcher to move between Student and Teacher/Admin forms
+
+---
+
+## Tech Stack
+
+| Tech          | Version |
+| ------------- | ------- |
+| Next.js       | 16.2.9  |
+| React         | 19.2.0  |
+| Redux Toolkit | ^2.11.1 |
+| redux-persist | ^6.0.0  |
+| Tailwind CSS  | ^4      |
+| ECharts       | ^6.0.0  |
+| Lucide React  | ^1.21.0 |
+
+---
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+```bash
+# Build for production
+npm run build
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+# Start production server
+npm start
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Structure
 
-## Learn More
+```
+src/
+├── pages/
+│   ├── index.js                  # Landing / redirect
+│   ├── Login/                    # Login page (student + teacher/admin tabs)
+│   ├── Signup/                   # Student & teacher signup with tab switcher
+│   ├── TeacherSignup/            # Teacher signup (tab-based, teacher default)
+│   ├── Dashboard/                # Unified dashboard router
+│   └── api/                      # API routes (students, teachers)
+├── components/
+│   ├── LoginForm/                # Login form fields
+│   ├── LoginTabs/                # Student / Teacher-Admin tab switcher
+│   ├── SignupForm/               # Student registration form
+│   ├── SignupTabs/               # Student / Teacher-Admin tab switcher
+│   ├── TeacherSignupForm/        # Teacher registration form
+│   ├── FormField/                # Reusable TextInput, PasswordInput, SelectInput
+│   ├── ForgotPasswordModal/      # Forgot password modal
+│   ├── Toast/                    # Toast notification component
+│   ├── AccountCreatedSuccess/    # Success modal after signup
+│   ├── ApprovalPending/          # Pending approval screen
+│   ├── UnifiedDashboard/         # Dashboard layout, sidebar, header
+│   ├── StudentDashboard/         # Student dashboard modules
+│   ├── AdminDashboard/           # Admin dashboard modules
+│   ├── Dashboard/                # Teacher dashboard modules
+│   ├── DashboardCard/            # Reusable dashboard stat card
+│   └── AdminChart/               # Admin analytics charts (ECharts)
+├── redux/
+│   ├── slices/
+│   │   ├── authSlice.js          # Auth state (login, logout, users)
+│   │   ├── signupSlice.js        # Student signup form state
+│   │   ├── teacherSignupSlice.js # Teacher signup form state
+│   │   ├── leavesSlice.js        # Leave requests state
+│   │   └── uiSlice.js            # UI state (sidebar, active module)
+│   └── store/index.js            # Redux store with redux-persist
+├── hooks/
+│   ├── useLogin.js               # Login logic hook
+│   ├── useScreenSize.js          # Responsive breakpoints hook
+│   └── useToast.js               # Toast notification hook
+├── utils/
+│   ├── validations.js            # Form validation helpers
+│   └── dashboard/dataHelpers.js  # Dashboard data utilities
+├── data/
+│   ├── students.json             # Persisted student records
+│   └── teachers.json             # Persisted teacher records
+└── styles/
+    └── globals.css               # Global styles + Tailwind imports
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+## Test Accounts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Admin / Teacher:**
+| Email | Password | Role |
+|---|---|---|
+| `admin@school.edu` | `admin123` | Admin |
+| `teacher@school.edu` | `teach123` | Teacher |
 
-## Deploy on Vercel
+**Student:** Register a new account at `/Signup` using a `@school.edu` email. Account requires admin approval before login.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+## Deployment
+
+Deployed on **Netlify** via GitHub continuous deployment from the `academic-portal` branch.
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/academic-1/deploy-status)](https://academic-1.netlify.app)
