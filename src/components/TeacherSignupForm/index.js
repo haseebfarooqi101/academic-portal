@@ -41,7 +41,6 @@ export default function TeacherSignupForm() {
       paddingBottom: '12px',
       paddingLeft: '16px',
       borderRadius: '8px',
-      marginTop: '16px'
     };
   };
 
@@ -126,16 +125,16 @@ export default function TeacherSignupForm() {
         />
       )}
 
-      {/* Outer: fills the flex-1 space given by the parent */}
-      <div className="flex flex-col h-full w-full">
+      {/* Exact same structure as SignupForm */}
+      <div className="flex flex-col flex-1 min-h-0 w-full">
 
-        {/* Scrollable fields — grows, scrolls internally, scrollbar hidden */}
+        {/* Scrollable fields — fixed height, scrolls internally, scrollbar hidden */}
         <div
-          className="teacher-signup-scroll flex-1 min-h-0 overflow-y-auto flex flex-col items-center"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          className="signup-scroll overflow-y-auto"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', height: '290px' }}
         >
           <style jsx>{`
-            .teacher-signup-scroll::-webkit-scrollbar { display: none; }
+            .signup-scroll::-webkit-scrollbar { display: none; }
           `}</style>
 
           <div className="flex flex-col items-center w-full" style={{ gap: '12px', paddingBottom: '16px' }}>
@@ -179,7 +178,7 @@ export default function TeacherSignupForm() {
         </div>
 
         {/* Button + Sign In link — pinned at bottom, never scrolls */}
-        <div className="shrink-0 mt-4">
+        <div className="shrink-0 mt-2">
           <form onSubmit={handleSubmit} className="flex justify-center">
             <button
               type="submit"

@@ -41,7 +41,6 @@ export default function SignupForm() {
       paddingBottom: '12px',
       paddingLeft: '16px',
       borderRadius: '8px',
-      marginTop: '16px'
     };
   };
 
@@ -130,12 +129,12 @@ export default function SignupForm() {
       )}
 
       {/* Outer: fills the flex-1 space given by the parent */}
-      <div className="flex flex-col h-full w-full">
+      <div className="flex flex-col flex-1 min-h-0 w-full">
 
-        {/* Scrollable fields — grows, scrolls internally, scrollbar hidden */}
+        {/* Scrollable fields — fixed height, scrolls internally, scrollbar hidden */}
         <div
-          className="signup-scroll flex-1 min-h-0 overflow-y-auto flex flex-col items-center"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          className="signup-scroll overflow-y-auto"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', height: '290px' }}
         >
           <style jsx>{`
             .signup-scroll::-webkit-scrollbar { display: none; }

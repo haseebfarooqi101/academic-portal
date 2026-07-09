@@ -18,9 +18,9 @@ export default function StudentSignup() {
   const getContainerStyles = () => {
     if (isMobile) {
       return {
-        containerClass: "min-h-screen flex justify-center items-end bg-gradient-to-br from-gray-50 to-gray-100",
+        containerClass: "min-h-screen flex justify-center items-end bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden",
         cardClass: "w-full bg-white rounded-t-2xl border-0 border-t border-gray-200 shadow-lg flex flex-col h-screen p-6 gap-4 overflow-hidden",
-        contentClass: "flex flex-col items-center w-full overflow-hidden",
+        contentClass: "flex flex-col items-center w-full flex-1 min-h-0",
         headerGap: '12px',
         logoSize: { width: '240px', height: '60px' },
         titleSize: '18px',
@@ -29,9 +29,9 @@ export default function StudentSignup() {
       };
     } else if (isTablet) {
       return {
-        containerClass: "min-h-screen flex justify-center items-end bg-gradient-to-br from-gray-50 to-gray-100 p-4",
-        cardClass: "w-[520px] bg-white rounded-t-2xl border border-gray-200 shadow-lg flex flex-col min-h-[calc(100vh-32px)] max-h-[672px] p-8 gap-6 overflow-hidden",
-        contentClass: "flex flex-col items-center w-full overflow-hidden",
+        containerClass: "min-h-screen flex justify-center items-end bg-gradient-to-br from-gray-50 to-gray-100 p-4 overflow-hidden",
+        cardClass: "w-[520px] bg-white rounded-t-2xl border border-gray-200 shadow-lg flex flex-col h-[calc(100vh-32px)] max-h-[672px] p-8 gap-4 overflow-hidden",
+        contentClass: "flex flex-col items-center w-full flex-1 min-h-0",
         headerGap: '16px',
         logoSize: { width: '280px', height: '70px' },
         titleSize: '20px',
@@ -40,9 +40,9 @@ export default function StudentSignup() {
       };
     } else {
       return {
-        containerClass: "min-h-screen flex justify-center items-end bg-gradient-to-br from-gray-50 to-gray-100 p-8",
-        cardClass: "w-[520px] bg-white rounded-t-2xl border border-gray-200 shadow-lg flex flex-col min-h-[calc(100vh-64px)] max-h-[672px] p-12 gap-8 overflow-hidden",
-        contentClass: "flex flex-col items-center w-full overflow-hidden",
+        containerClass: "min-h-screen flex justify-center items-end bg-gradient-to-br from-gray-50 to-gray-100 p-8 overflow-hidden",
+        cardClass: "w-[520px] bg-white rounded-t-2xl border border-gray-200 shadow-lg flex flex-col h-[calc(100vh-64px)] max-h-[672px] p-12 gap-4 overflow-hidden",
+        contentClass: "flex flex-col items-center w-full flex-1 min-h-0",
         headerGap: '16px',
         logoSize: { width: '280px', height: '70px' },
         titleSize: '20px',

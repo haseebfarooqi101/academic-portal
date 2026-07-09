@@ -169,7 +169,8 @@ export default function SignupTabs({ activeTab, setActiveTab }) {
                 paddingLeft: '12px',
                 borderRadius: '2px',
                 gap: '10px',
-                color: '#09090B'
+                color: '#09090B',
+                backgroundColor: 'white'
               } : {
                 width: '150px',
                 height: '32px',
@@ -198,7 +199,8 @@ export default function SignupTabs({ activeTab, setActiveTab }) {
                 paddingLeft: '12px',
                 borderRadius: '2px',
                 gap: '10px',
-                color: '#09090B'
+                color: '#09090B',
+                backgroundColor: 'white'
               } : {
                 width: '150px',
                 height: '32px',
