@@ -105,7 +105,7 @@
     "registrationNumber": "CS-2023-067",
     "department": "Computer Science",
     "password": "Usman@123",
-    "status": "pending"
+    "status": "rejected"
   },
   {
     "id": 1765412596703,
@@ -142,5 +142,16 @@
     "department": "Mathematics",
     "password": "Kamran@123",
     "status": "approved"
+  },
+  {
+    "id": 1783715750862.4575,
+    "name": "Kim Lee",
+    "email": "kim@school.edu",
+    "registrationNumber": "ME-2019-007",
+    "department": "Computer Science",
+    "password": "Kim@123",
+    "role": "student",
+    "status": "approved",
+    "createdAt": "2026-07-10T20:35:50.862Z"
   }
 ]
