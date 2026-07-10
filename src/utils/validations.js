@@ -27,7 +27,7 @@ export const validateStudentId = (studentId) => {
 
 // Department validation
 export const validateDepartment = (department) => {
-  const validDepartments = ['Computer Science', 'Mathematics', 'Physics', 'Chemistry', 'Biology', 'English'];
+  const validDepartments = ['Computer Science', 'Electronics', 'Mechanical', 'Civil', 'Electrical', 'Chemical'];
   return validDepartments.includes(department);
 };
 
